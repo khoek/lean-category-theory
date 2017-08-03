@@ -3,9 +3,6 @@
 -- Authors: Stephen Morgan, Scott Morrison
 
 import .tactics
-import .graphs
-
-open categories.graphs
 
 namespace categories
 

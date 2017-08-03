@@ -39,7 +39,7 @@ private definition LimitObject_in_FunctorCategory { J C D : Category } [ cmp : C
   commutativity := ♯ 
 }
 
-set_option pp.implicit true
+-- set_option pp.implicit true
 private definition morphism_to_LimitObject_in_FunctorCategory { J C D : Category } [ cmp : Complete D ] { F : Functor J (FunctorCategory C D) } ( Y : Cone F ) : ConeMorphism Y (LimitObject_in_FunctorCategory F) := {
       cone_morphism := {
         components := begin
@@ -50,10 +50,11 @@ private definition morphism_to_LimitObject_in_FunctorCategory { J C D : Category
                           dsimp',
                           tactic.any_goals (tactic.intros >>= λ x, tactic.skip),
                           tactic.any_goals dsimp',
-                          exact (Y.cone_maps j).components X,
-                          -- simp [id_locked_eq],
-                          apply initial.is_terminal.uniqueness_of_morphisms_to_terminal_object,
-                          tactic.result >>= tactic.trace
+                          -- exact (Y.cone_maps j).components X,
+                          any_goals { simp [id_locked_eq] },
+                          tactic.result >>= tactic.trace,
+                          tactic.any_goals `[apply initial.is_terminal.uniqueness_of_morphisms_to_terminal_object],
+                          tactic.result >>= tactic.trace,
                        end,
         naturality := sorry
       },
