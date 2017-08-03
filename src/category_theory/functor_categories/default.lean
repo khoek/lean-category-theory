@@ -5,7 +5,6 @@
 import ..natural_transformation
 
 open categories
-open categories.isomorphism
 open categories.functor
 open categories.natural_transformation
 
