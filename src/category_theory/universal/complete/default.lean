@@ -2,31 +2,23 @@
 -- Released under Apache 2.0 license as described in the file LICENSE.
 -- Authors: Scott Morrison
 
-import ..instances
-import ...discrete_category
-import ...currying.currying_1
-import ...products.switch
+import ..cones
 
 open categories
 open categories.functor
-open categories.natural_transformation
+-- open categories.natural_transformation
 open categories.functor_categories
-open categories.isomorphism
-open categories.products
+-- open categories.isomorphism
+-- open categories.products
 open categories.initial
-open categories.types
-open categories.util
+-- open categories.types
 
 namespace categories.universal
-
-class {u v} Complete_for ( C : Category.{u v} ) ( p : Category.{u v} → Prop ) := 
-  ( limitCone : Π { J : Category.{u v} } ( w : p J ) ( F : Functor J C ), LimitCone F )
 
 class {u v} Complete ( C : Category.{u v} ) := 
   ( limitCone : Π { J : Category.{u v} } ( F : Functor J C ), LimitCone F )
 
 definition {u v} limitCone { C : Category.{u v} } [ Complete.{u v} C ] { J : Category.{u v} } ( F : Functor J C ) := Complete.limitCone F
-definition {u v} limit     { C : Category.{u v} } [ Complete.{u v} C ] { J : Category.{u v} } ( F : Functor J C ) := (Complete.limitCone F).terminal_object.cone_point
 
 @[applicable] private lemma {u v} uniqueness_of_morphism_to_limit
   { J C : Category.{u v} }
@@ -41,15 +33,6 @@ definition {u v} limit     { C : Category.{u v} } [ Complete.{u v} C ] { J : Cat
     have q := L.uniqueness_of_morphisms_to_terminal_object _ (L.morphism_to_terminal_object_from X) G,
     exact congr_arg ConeMorphism.cone_morphism q,
   end
-
-@[simp,ematch] private lemma {u v} morphism_to_terminal_object_composed_with_cone_map
-  { J C : Category.{u v} }
-  { F : Functor J C }
-  { L : LimitCone F }
-  { X : Cone F }
-  { j : J.Obj }
-    : C.compose (L.morphism_to_terminal_object_from X).cone_morphism (L.terminal_object.cone_maps j) = X.cone_maps j :=
-  (L.morphism_to_terminal_object_from X).commutativity j
 
 @[applicable] definition morphism_to_terminal_object_cone_point 
   { J D : Category }

@@ -2,12 +2,9 @@
 -- Released under Apache 2.0 license as described in the file LICENSE.
 -- Authors: Stephen Morgan, Scott Morrison
 
-import ..isomorphism
 import ..functor_categories
-import ..opposites
 
 open categories
-open categories.isomorphism
 
 namespace categories.initial
 
@@ -28,8 +25,6 @@ structure is_initial { C : Category } ( X : C.Obj ) :=
 
 attribute [applicable,ematch] is_initial.uniqueness_of_morphisms_from_initial_object
 
-lemma InitialObjects_are_unique { C : Category } ( X Y : InitialObject C ) : Isomorphism C X Y := ♯
-
 structure TerminalObject ( C : Category ) :=
   (terminal_object                            : C.Obj)
   (morphism_to_terminal_object_from           : ∀ Y : C.Obj, C.Hom Y terminal_object)
@@ -46,14 +41,5 @@ structure is_terminal { C : Category } ( X : C.Obj ) :=
   (uniqueness_of_morphisms_to_terminal_object :  ∀ Y : C.Obj, ∀ f : C.Hom Y X, f = morphism_to_terminal_object_from Y)
 
 attribute [applicable,ematch] is_terminal.uniqueness_of_morphisms_to_terminal_object
-
-lemma TerminalObjects_are_unique { C : Category } ( X Y : TerminalObject C ) : Isomorphism C X Y := ♯
-
-class ZeroObject ( C : Category ) :=
-  (zero_object : C.Obj)
-  (is_initial  : is_initial  zero_object)
-  (is_terminal : is_terminal zero_object)
-
-definition ZeroObject.zero_morphism { C : Category } ( Z : ZeroObject C ) ( X Y : C.Obj ) : C.Hom X Y := C.compose (Z.is_terminal.morphism_to_terminal_object_from X) (Z.is_initial.morphism_from_initial_object_to Y) 
 
 end categories.initial

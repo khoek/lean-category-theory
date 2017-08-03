@@ -59,42 +59,7 @@ definition Cones_functoriality { J C D : Category } ( F : Functor J C ) ( G : Fu
   functoriality := ♯
 }
 
-structure Cocone { J C : Category } ( F : Functor J C ) :=
-  ( cocone_point  : C.Obj )
-  ( cocone_maps   : Π j : J.Obj, C.Hom (F.onObjects j) cocone_point )
-  ( commutativity : Π { j k : J.Obj }, Π f : J.Hom j k, C.compose (F.onMorphisms f) (cocone_maps k) = cocone_maps j )
-
-attribute [simp,ematch] Cocone.commutativity
-
-structure CoconeMorphism { J C : Category } { F : Functor J C } ( X Y : Cocone F ) :=
-  ( cocone_morphism      : C.Hom X.cocone_point Y.cocone_point )
-  ( commutativity : Π j : J.Obj, C.compose (X.cocone_maps j) cocone_morphism = (Y.cocone_maps j) )
-
-attribute [simp,ematch] CoconeMorphism.commutativity
-
-@[applicable] lemma CoconeMorphism_componentwise_equal
-  { J C : Category } { F : Functor J C } { X Y : Cocone F }
-  { f g : CoconeMorphism X Y }
-  ( w : f.cocone_morphism = g.cocone_morphism ) : f = g :=
-  begin
-    induction f,
-    induction g,
-    blast
-  end
-
-definition Cocones { J C : Category } ( F : Functor J C ) : Category :=
-{
-  Obj            := Cocone F,
-  Hom            := λ X Y, CoconeMorphism X Y,
-  compose        := λ X Y Z f g, ⟨ C.compose f.cocone_morphism g.cocone_morphism, ♮ ⟩,
-  identity       := λ X, ⟨ C.identity X.cocone_point, ♮ ⟩,
-  left_identity  := ♯,
-  right_identity := ♯,
-  associativity  := ♯
-}
-
 definition LimitCone   { J C : Category } ( F : Functor J C ) := TerminalObject (Cones F)
-definition ColimitCone { J C : Category } ( F : Functor J C ) := InitialObject (Cocones F)
 
 end categories.universal
 
