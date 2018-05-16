@@ -14,11 +14,11 @@ namespace categories.functor_categories
 universes u₁ u₂
 
 variable (C : Type (u₁+1))
-variable [category C]
+variable [small_category C]
 variable (D : Type (u₂+1))
 variable [category D]
 
-definition Evaluation : ((C ↝ D) × C) ↝ D := {
+definition Evaluation : ((C ↝ₛ D) × C) ↝ₛ D := {
   onObjects     := λ p, p.1 +> p.2,
   onMorphisms   := λ x y f, (x.1 &> f.2) ≫ (f.1.components y.2)
 }
