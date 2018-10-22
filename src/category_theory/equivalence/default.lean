@@ -167,28 +167,31 @@ def trans (e : C ≌ D) (f : D ≌ E) : C ≌ E :=
               end },
     inv := { app := λ X, id_feef e f X, naturality' :=
               begin
-                sorry
-                -- intros X Y f_1,
-                -- dsimp at *, simp at *, dsimp at *,
-                -- nth_rewrite_lhs 0 ←category.assoc,
-                -- nth_rewrite_rhs 2 ←category.assoc,
-                -- nth_rewrite_rhs 3 ←category.assoc,
-                -- nth_rewrite_rhs 1 ←category.assoc,
-                -- nth_rewrite_rhs 0 category.assoc,
-                -- nth_rewrite_rhs 0 category.assoc,
-                -- nth_rewrite_rhs 0 ←category.assoc,
-                -- nth_rewrite_rhs 0 category.assoc,
-                -- nth_rewrite_rhs 0 ←fun_inv_map,
-                -- nth_rewrite_rhs 0 ←functor.map_comp,
-                -- nth_rewrite_rhs 0 ←functor.map_comp,
-                -- nth_rewrite_rhs 0 nat_iso.naturality_2,
-                -- nth_rewrite_rhs 0 category.assoc,
-                -- nth_rewrite_rhs 0 ←functor.map_comp,
-                -- nth_rewrite_rhs 0 ←nat_trans.naturality,
-                -- nth_rewrite_rhs 0 functor.image_preimage,
-                -- nth_rewrite_rhs 0 functor.map_comp,
-                -- nth_rewrite_rhs 0 ←category.assoc,
-                -- nth_rewrite_rhs 0 ←nat_trans.naturality
+                -- sorry
+                intros X Y f_1,
+                dsimp at *, simp at *, dsimp at *,
+                -- rewrite_search {trace_result := tt, trace_summary := tt, optimal := ff, view := tidy.rewrite_search.tracer.no tidy.rewrite_search.tracer.visualiser},
+
+-- FIXME we should put in an `erw` for `conv` into mathlib.
+
+/- `rewrite_search` says -/
+conv { to_lhs, rw [←category.assoc] },
+conv { to_rhs, rw [←category.assoc] },
+conv { to_rhs, congr, skip, congr, skip, rw [←category.assoc, ←category.assoc]},
+conv { to_rhs, congr, skip, congr, skip, congr, rw [category.assoc, ←fun_inv_map] {md := semireducible} },
+conv { to_rhs, congr, skip, congr, skip, rw [←functor.map_comp] },
+conv { to_rhs, congr, skip, rw [←functor.map_comp] },
+conv { to_rhs, congr, skip, congr, rw [nat_iso.naturality_2] {md := semireducible} },
+conv { to_rhs, rw [category.assoc] },
+conv { to_rhs, congr, skip, rw [←functor.map_comp] },
+conv { to_rhs, congr, skip, congr, rw [←nat_trans.naturality] },
+conv { to_rhs, congr, skip, congr, rw [functor.image_preimage] {md := semireducible} },
+conv { to_rhs, congr, skip, rw [functor.map_comp] },
+conv { to_rhs, rw [←category.assoc] },
+conv { to_rhs, congr, rw [←nat_trans.naturality] {md := semireducible}},
+-- Note: needs me
+trivial,
+/- `rewrite_search` says -/
               end },
     hom_inv_id' :=
       begin
